@@ -16,8 +16,7 @@ ENV LANG ${LC_ALL}
 
 RUN echo "#log: ${project}: Setup system" \
   && set -x \
-  && apk add --update build-base python3 \
-  && npm i -g prebuildify@5 node-gyp@9 \
+  && apk add --update build-base python3 py3-setuptools \
   && sync
 
 ADD . /usr/local/opt/${project}
@@ -25,7 +24,7 @@ WORKDIR /usr/local/opt/${project}
 
 RUN echo "#log: ${project}: Running build" \
   && set -x \
-  && npm ci \
+  && npm ci --include=dev \
   && npm run build
 
 ARG RUN_TESTS=true
